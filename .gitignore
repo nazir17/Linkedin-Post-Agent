@@ -144,11 +144,11 @@ ENV/
 env.bak/
 venv.bak/
 venv
+volumes
 
 # Spyder project settings
 .spyderproject
 .spyproject
-
 # Rope project settings
 .ropeproject
 

@@ -1,5 +1,3 @@
-# FILE: app/configs/setup_linkedin_oauth.py
-
 import os
 from dotenv import load_dotenv, set_key
 import webbrowser
@@ -27,21 +25,18 @@ class CallbackHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
                 error_desc = query.get('error_description', ['Unknown error'])[0]
-                # ✅ FIX: Convert to bytes with .encode()
-                self.wfile.write(f"<h1>❌ Authorization failed!</h1><p>{error}: {error_desc}</p>".encode())
+                self.wfile.write(f"<h1> Authorization failed!</h1><p>{error}: {error_desc}</p>".encode())
                 self.server.auth_code = None
             elif auth_code:
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
-                # ✅ FIX: Convert to bytes with .encode()
-                self.wfile.write("<h1>✅ Authorization successful!</h1><p>You can close this window.</p>".encode())
+                self.wfile.write("<h1>Authorization successful!</h1><p>You can close this window.</p>".encode())
                 self.server.auth_code = auth_code
             else:
                 self.send_response(400)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
-                # ✅ FIX: Convert to bytes with .encode()
                 self.wfile.write("<h1>No authorization code received!</h1>".encode())
                 self.server.auth_code = None
         else:
@@ -59,11 +54,11 @@ def get_linkedin_access_token():
     print("=" * 60)
     
     if not CLIENT_ID or not CLIENT_SECRET:
-        print("\n❌ Please add LinkedIn credentials to .env file")
+        print("\n Please add LinkedIn credentials to .env file")
         return
     
-    print(f"\n✅ Client ID: {CLIENT_ID[:10]}...")
-    print(f"✅ Redirect URI: {REDIRECT_URI}")
+    print(f"\n Client ID: {CLIENT_ID[:10]}...")
+    print(f"Redirect URI: {REDIRECT_URI}")
     
     auth_params = {
         "response_type": "code",
@@ -74,13 +69,13 @@ def get_linkedin_access_token():
     
     auth_url = f"https://www.linkedin.com/oauth/v2/authorization?{urlencode(auth_params)}"
     
-    print("\n🌐 Opening browser...")
+    print("\n Opening browser...")
     print(f"URL: {auth_url}\n")
     
     try:
         webbrowser.open(auth_url)
     except:
-        print("⚠️ Could not open browser. Please copy URL above.")
+        print("Could not open browser. Please copy URL above.")
     
     print("Waiting for authorization...")
     
@@ -90,16 +85,16 @@ def get_linkedin_access_token():
         server.handle_request()
         
         if not server.auth_code:
-            print("\n❌ Authorization failed!")
+            print("\n Authorization failed!")
             return
         
-        print("✅ Authorization code received")
+        print(" Authorization code received")
         
     except OSError as e:
-        print(f"\n❌ Server error: {e}")
+        print(f"\n Server error: {e}")
         return
 
-    print("\n🔄 Exchanging code for token...")
+    print("\n Exchanging code for token...")
     
     token_params = {
         "grant_type": "authorization_code",
@@ -121,10 +116,10 @@ def get_linkedin_access_token():
             token_data = response.json()
             access_token = token_data["access_token"]
             
-            print(f"\n✅ Access token obtained!")
+            print(f"\n Access token obtained!")
             
             set_key(".env", "LINKEDIN_ACCESS_TOKEN", access_token)
-            print(f"✅ Token saved to .env")
+            print(f" Token saved to .env")
             
             test_response = requests.get(
                 "https://api.linkedin.com/v2/userinfo",
@@ -134,18 +129,18 @@ def get_linkedin_access_token():
             
             if test_response.status_code == 200:
                 user_data = test_response.json()
-                print(f"\n✅ Token verified!")
+                print(f"\n Token verified!")
                 print(f"   Name: {user_data.get('name', 'N/A')}")
                 print(f"   Email: {user_data.get('email', 'N/A')}")
-                print("\n🎉 Setup complete!")
+                print("\n Setup complete!")
             else:
-                print(f"\n⚠️ Token test failed: {test_response.status_code}")
+                print(f"\n Token test failed: {test_response.status_code}")
         else:
-            print(f"\n❌ Token exchange failed: {response.status_code}")
+            print(f"\n Token exchange failed: {response.status_code}")
             print(response.text)
             
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n Error: {e}")
 
 
 if __name__ == "__main__":

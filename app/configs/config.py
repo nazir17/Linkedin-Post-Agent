@@ -15,6 +15,8 @@ class Settings:
     LINKEDIN_CLIENT_ID = os.getenv("LINKEDIN_CLIENT_ID")
     LINKEDIN_CLIENT_SECRET = ("LINKEDIN_CLIENT_SECRET")
     NEWS_RSS_BASE = os.getenv("NEWS_RSS_BASE", "https://news.google.com/rss/search?q=")
-
+    MILVUS_HOST = os.getenv("MILVUS_HOST")
+    MILVUS_PORT = os.getenv("MILVUS_PORT")
+    MILVUS_COLLECTION_NAME = os.getenv("MILVUS_COLLECTION_NAME")
 
 settings = Settings()

@@ -50,10 +50,10 @@ def post_to_linkedin(content: str):
         )
         
         if resp.status_code in (201, 200):
-            print("✅ Posted to LinkedIn successfully")
+            print("Posted to LinkedIn successfully")
             return {'success': True, 'response': resp.json()}
         else:
-            print(f"❌ LinkedIn post failed: {resp.status_code}")
+            print(f"LinkedIn post failed: {resp.status_code}")
             return {
                 'success': False,
                 'status_code': resp.status_code,
@@ -61,5 +61,5 @@ def post_to_linkedin(content: str):
             }
             
     except Exception as e:
-        print(f"❌ LinkedIn posting error: {e}")
+        print(f"LinkedIn posting error: {e}")
         return {'success': False, 'detail': str(e)}
