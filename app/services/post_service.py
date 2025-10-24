@@ -3,7 +3,7 @@ import hashlib
 from app.helpers.web_fetcher import fetch_news_rss
 from app.services.genai_service import generate_linkedin_post
 from app.services.embedding_service import embed_texts
-from app.helpers.pinecone_helper import upsert_vectors
+from app.helpers.milvus_helper import upsert_vectors
 from app.helpers.db_helper import save_post, mark_post_as_posted, get_post_by_id
 from app.configs.database import AsyncSessionLocal
 from app.helpers.linkedin_poster import post_to_linkedin

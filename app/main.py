@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.controllers import post_controller
 from app.configs.database import engine, Base
-import asyncio
 
 app = FastAPI(
     title="LinkedIn AI Agent",
@@ -23,13 +22,13 @@ app.add_middleware(
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    print("✅ Database initialized")
+    print("Database initialized")
 
 
 @app.on_event("shutdown")
 async def shutdown():
     await engine.dispose()
-    print("✅ Application shutdown")
+    print("Application shutdown")
 
 
 app.include_router(post_controller.router)

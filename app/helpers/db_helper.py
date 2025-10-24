@@ -1,10 +1,10 @@
 import json
-from typing import List
+from typing import Tuple
 from app.models.post_model import Post
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def save_post(db: AsyncSession, topic: str, content: str, summary: str, source_urls: List[str], posted: int = 0):
+async def save_post(db: AsyncSession, topic: str, content: str, summary: str, source_urls: Tuple[str], posted: int = 0):
     post = Post(
         topic=topic,
         content=content,
